@@ -1,4 +1,4 @@
-class Grass {
+class Base{
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -28,8 +28,10 @@ class Grass {
 
         }
         return found;
-
     }
+}
+
+class Grass extends Base{
 
     mult() {
         var empty = random(this.chooseCell(0))

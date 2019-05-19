@@ -1,4 +1,6 @@
-class Bolt extends Base{
+var Base=require('./base');
+
+module.exports = class Bolt extends Base{
     constructor(x, y) {
         super(x, y)
         this.energyb = 30;

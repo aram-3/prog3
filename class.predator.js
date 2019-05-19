@@ -1,4 +1,6 @@
-class Gishatich extends Base{
+var Base=require('./base');
+
+module.exports =  class Gishatich extends Base{
     constructor(x, y){
         super(x, y);
         this.energyzer = 10;

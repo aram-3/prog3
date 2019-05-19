@@ -1,4 +1,6 @@
-class Xotaker extends Base {
+var Base=require('./base');
+
+module.exports =  class Xotaker extends Base {
     constructor(x, y) {
         super(x, y);
         this.energy = 10;
@@ -41,7 +43,6 @@ class Xotaker extends Base {
             var newY = empty[1]
             matrix[newY][newX] = 2
             matrix[this.y][this.x] = 0
-
             this.x = newX
             this.y = newY
         }

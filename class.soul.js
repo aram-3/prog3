@@ -1,4 +1,6 @@
-class Soul extends Base{
+var Base=require('./base');
+
+module.exports = class Soul extends Base{
     constructor(x, y) {
         super(x, y)
         this.energys = 12;
@@ -57,7 +59,6 @@ class Soul extends Base{
             var newSY = empty[1]
             matrix[newSY][newSX] = 4
             matrix[this.y][this.x] = 0
-
             this.x = newSX
             this.y = newSY
         }

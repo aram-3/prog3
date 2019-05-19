@@ -1,13 +1,9 @@
 function setup() {
-    var socket = io();
+    var socket = io()
+    socket.on("ugharkel server", drawMatrix)
     var side = 28;
-    var matrix = [];
-    let grassCount = document.getElementById('grassCount');
-    let grassEaterCount = document.getElementById('grassEaterCount');
-    socket.on("data", drawCreatures);
 
-    function drawCreatures(data) {
-        matrix = data.matrix;
+    function drawMatrix(matrix) {
         createCanvas(matrix[0].length * side, matrix.length * side)
         background('#acacac');
 
@@ -32,9 +28,7 @@ function setup() {
                 else if (matrix[y][x] == 0) {
                     fill("#acacac");
                 }
-
                 rect(x * side, y * side, side, side)
-
             }
         }
     }

@@ -1,10 +1,53 @@
+grassArr = [];
+xotakerArr = [];
+gishatichArr = [];
+soulArr = [];
+boltArr = [];
 
- grassArr = [];
- xotakerArr = [];
- gishatichArr = [];
- soulArr = [];
- boltArr = [];
+matrix = [ 
+    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+]
 
+var m=Math.round((Math.random()*10)+25)
+var n=Math.round((Math.random()*10)+13)
+ var matrix=[]
+
+ for(var y = 0; y < m; y++){
+ 	matrix[y]=[]
+   for(var x = 0; x <n; x++){
+ 			matrix[y].push(Math.round(Math.random(0,1)))
+
+             function getRandomInt(max) {
+                return Math.floor(Math.random() * Math.floor(max));
+              }
+              matrix[y].push(getRandomInt(6))
+ 	}
+ }
+
+var Grass = require("./grass.js");
+var Grasseater = require("./grasseater.js");
+var Predator = require("./predator.js");
+var Soul = require("./soul.js");
+var Bolt = require("./bolt.js");
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -80,7 +123,10 @@ function game() {
         boltArr[i].mult()
         boltArr[i].die()
     }
-    io.sockets.emit("ugharkel server", matrix)
+    let sendData = {
+        matrix: matrix
+    }
+    io.sockets.emit("ugharkel server", sendData)
 }
 setInterval(game,10)
 

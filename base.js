@@ -1,5 +1,5 @@
-class Base{
-    constructor(x, y) {
+module.exports =  class Base{
+constructor(x, y) {
         this.x = x;
         this.y = y;
         this.multiply = 0;

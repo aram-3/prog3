@@ -1,66 +1,72 @@
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var fs = require("fs");
+
+
+app.use(express.static("."));
+app.get('/', function (req, res) {
+    res.redirect('index.html');
+});
+server.listen(3000);
+var fs = require("fs");
+
 grassArr = [];
 xotakerArr = [];
 gishatichArr = [];
 soulArr = [];
 boltArr = [];
+charecterStatistic = {
+    died: {
+        Xotakerss: 0,
+        hunters: 0,
+    },
+    killed: {
+        grasses: 0,
+        xotakers: 0,
+    },
+    born: {
+        grasses: 0,
+        xotakers: 0,
+        hunters: 0,
+    },
+    ate: {
+        xotakers: 0,
+        hunters: 0,
+    },
+}
+matrix = [];
 
-matrix = [ 
-    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-]
+var m = Math.round((Math.random() * 10) + 25)
+var n = Math.round((Math.random() * 10) + 13)
+var matrix = []
 
-var m=Math.round((Math.random()*10)+25)
-var n=Math.round((Math.random()*10)+13)
- var matrix=[]
+for (var y = 0; y < m; y++) {
+    matrix[y] = []
+    for (var x = 0; x < n; x++) {
+        matrix[y].push(Math.round(Math.random(0, 1)))
 
- for(var y = 0; y < m; y++){
- 	matrix[y]=[]
-   for(var x = 0; x <n; x++){
- 			matrix[y].push(Math.round(Math.random(0,1)))
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+        matrix[y].push(getRandomInt(6))
+    }
+}
 
-             function getRandomInt(max) {
-                return Math.floor(Math.random() * Math.floor(max));
-              }
-              matrix[y].push(getRandomInt(6))
- 	}
- }
+
+
+exanak = "Ձմեռ";
 
 var Grass = require("./grass.js");
-var Grasseater = require("./grasseater.js");
-var Predator = require("./predator.js");
+var Xotaker = require("./xotaker.js");
+var Gishatich = require("./gishatich.js");
 var Soul = require("./soul.js");
 var Bolt = require("./bolt.js");
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-app.use(express.static("."));
-app.get('/', function (req, res) {
-   res.redirect('index.html');
-});
-server.listen(3000);
 
 
-
-function creatingobjects() {
+function start() {
+    io.sockets.emit('matrix', matrix);
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
             if (matrix[y][x] == 1) {
@@ -87,14 +93,28 @@ function creatingobjects() {
     }
 }
 
-creatingobjects()
+start()
 
+setInterval(game, 1000);
+seasontime=0;
 function game() {
+    io.sockets.emit('number', [grassArr.length, xotakerArr.length, gishatichArr.length])
+    io.sockets.emit('statistics', charecterStatistic);
+    seasontime++;
+    if(seasontime <= 10){
+        season = "Ամառ"
+        var seas = season;
+    }
+    else if(seasontime <= 19){
+        season = "Ձմեռ"
+        var seas = season;
+    }
+    else{
+        seasontime = 0;
+    }
     for (var i in grassArr) {
         grassArr[i].mult()
     }
-
-
     for (var i in xotakerArr) {
         xotakerArr[i].eat()
         xotakerArr[i].move()
@@ -123,11 +143,18 @@ function game() {
         boltArr[i].mult()
         boltArr[i].die()
     }
-    let sendData = {
-        matrix: matrix
-    }
-    io.sockets.emit("ugharkel server", sendData)
+    console.log(seas)
+    io.sockets.emit('matrix', server);
+    io.sockets.emit('season', seas);
 }
-setInterval(game,10)
+setInterval(game, 100)
 
-game()
+var statistics= {};
+setInterval(function(){
+    statistics.xot=grassArr.length;
+    statistics.xotaker=xotakerArr.length;
+    fs.writeFile("statistics.json", JSON.stringify(statistics),function(){
+        console.log("send");
+    })
+},2000)
+

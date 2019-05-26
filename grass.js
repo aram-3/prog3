@@ -1,6 +1,10 @@
 var Base = require('./base');
 
 module.exports = class Grass extends Base{
+    constructor(x, y){
+        super(x, y);
+
+    }
     mult() {
         var empty = random(this.chooseCell(0))
         this.multiply++
